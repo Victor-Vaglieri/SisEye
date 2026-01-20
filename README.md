@@ -70,6 +70,8 @@ Python 3
 + Linux (ambiente principal de execução)
 
 ## Estrutura do Projeto
+
+```
 onvif/
 ├── launcher.py
 ├── descobrir_onvif.py
@@ -77,7 +79,7 @@ onvif/
 ├── painel.py
 ├── cameras_onvif.txt
 └── rtsp_urls.txt
-
+```
 
 Automação de dispositivos de rede
 
