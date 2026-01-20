@@ -81,6 +81,3 @@ onvif/
 └── rtsp_urls.txt
 ```
 
-Automação de dispositivos de rede
-
-Desenvolvimento de soluções customizadas de vigilância
