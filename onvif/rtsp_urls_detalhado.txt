@@ -1,6 +1,0 @@
-# Câmera 192.168.15.27 - Perfil: mainStream (Token: 000)
-rtsp://192.168.15.27:554/user=admin_password=tlJwpbo6_channel=0_stream=0&onvif=0.sdp?real_stream
-# Câmera 192.168.15.27 - Perfil: subStream (Token: 001)
-rtsp://192.168.15.27:554/user=admin_password=tlJwpbo6_channel=0_stream=1&onvif=0.sdp?real_stream
-# Câmera 192.168.15.27 - Perfil: snapStream (Token: 002)
-rtsp://192.168.15.27:554/user=admin_password=tlJwpbo6_channel=0_stream=2.sdp?real_stream
