@@ -1,0 +1,7 @@
+========================================
+DESCOBERTA DE CAMERAS ONVIF
+Data/Hora: 2026-01-20 17:51:54
+========================================
+
+Nenhuma camera ONVIF encontrada.
+

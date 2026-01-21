@@ -1,7 +1,10 @@
 ========================================
 DESCOBERTA DE CAMERAS ONVIF
-Data/Hora: 2026-01-18 16:13:26
+Data/Hora: 2026-01-20 17:03:08
 ========================================
 
-Nenhuma camera ONVIF encontrada.
-
+CAMERA 1
+Endpoint ONVIF: http://192.168.15.27:8899/onvif/device_service
+IP: 192.168.15.27
+Tipos: [http://www.onvif.org/ver10/network/wsdl:NetworkVideoTransmitter, http://www.onvif.org/ver10/device/wsdl:Device]
+----------------------------------------
