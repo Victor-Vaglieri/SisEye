@@ -1,0 +1,34 @@
+# ==========================
+# ARQUIVOS DO PROJETO (Dados Sensíveis)
+# ==========================
+# Ignora listas de IPs e URLs para não vazar senhas no GitHub
+cameras_onvif.txt
+rtsp_urls.txt
+rtsp_urls_detalhado.txt
+
+# ==========================
+# PYTHON (Padrão)
+# ==========================
+# Bytecode compilado (lixo do sistema)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambientes Virtuais
+.venv/
+venv/
+env/
+
+# ==========================
+# PYINSTALLER (Executáveis)
+# ==========================
+# Ignora as pastas de build e o executável final
+build/
+dist/
+*.spec
+
+# ==========================
+# SISTEMA OPERACIONAL
+# ==========================
+.DS_Store
+Thumbs.db
