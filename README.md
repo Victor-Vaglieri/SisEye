@@ -2,6 +2,14 @@
 
 Este repositório contém a documentação e o código-fonte de um conjunto de ferramentas desenvolvidas em Python para descoberta, gerenciamento e visualização de câmeras de segurança compatíveis com o protocolo ONVIF, com foco em aprendizado técnico, automação e construção de um painel de vigilância customizado.
 
+## Hardware Compatível
+
+Este software foi otimizado e validado **exclusivamente** para o seguinte hardware. O funcionamento em outros dispositivos não é garantido devido a particularidades de firmware e codec (HEVC).
+
+* **Fabricante:** H264 (OEM Genérico / ICSee / XMeye)
+* **Modelo:** `XM535_X6E-WEQ_8M`
+* **Firmware Validado:** `V5.07.X02.000A07F3.10010.346532.S.ONVIF 21.06`
+
 ## Visão Geral
 
 O projeto foi concebido como um laboratório para estudo de protocolos de vídeo e redes, evoluindo para uma solução prática de monitoramento. Diferente de VMS tradicionais, o SisEye é leve e roda via linha de comando ou interface gráfica minimalista baseada em OpenCV.
@@ -13,7 +21,6 @@ O projeto foi concebido como um laboratório para estudo de protocolos de vídeo
 3. Painel de Vigilância (SisEye Player): Interface gráfica com Layout em Grid (1 câmera principal + 1 secundária).
 4. Controle Integrado: Terminal de comandos embutido na interface visual (controle de Luz/IR).
 5. Estabilidade de Rede: Implementação de captura assíncrona (Threading) e transporte via TCP para evitar corrupção de pacotes em Wi-Fi.
-
 
 
 ## Ciclo de Desenvolvimento
@@ -80,12 +87,25 @@ onvif/
 
 Todos os scripts podem ser executados individualmente ou por meio de um launcher em terminal, que lista automaticamente as ferramentas disponíveis no diretório.
 
+### Configuração (.env)
+
+O projeto utiliza um arquivo `.env` para gerenciar credenciais, eliminando a necessidade de editar o código-fonte.
+
+Crie um arquivo chamado `.env` na raiz do projeto com o seguinte formato:
+
+```env
+# Credenciais da Câmera
+ONVIF_USER=admin
+ONVIF_PASS=admin
+ONVIF_PORT=8899
+```
+
 ### dependencias
 
 Antes de iniciar, instale as bibliotecas essenciais para processamento de imagem (OpenCV), comunicação com câmeras (ONVIF) e descoberta de rede:
 
 ```
-pip install opencv-python onvif-zeep numpy wsdiscovery keyboard ffpyplayer
+pip install opencv-python onvif-zeep numpy wsdiscovery keyboard ffpyplayer python-dotenv
 ```
 
 ### Launcher de controle
