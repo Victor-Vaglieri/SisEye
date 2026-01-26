@@ -85,7 +85,7 @@ Todos os scripts podem ser executados individualmente ou por meio de um launcher
 Antes de iniciar, instale as bibliotecas essenciais para processamento de imagem (OpenCV), comunicação com câmeras (ONVIF) e descoberta de rede:
 
 ```
-pip install opencv-python onvif-zeep numpy wsdiscovery
+pip install opencv-python onvif-zeep numpy wsdiscovery keyboard ffpyplayer
 ```
 
 ### Launcher de controle
