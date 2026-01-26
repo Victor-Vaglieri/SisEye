@@ -5,6 +5,7 @@
 cameras_onvif.txt
 rtsp_urls.txt
 rtsp_urls_detalhado.txt
+.env
 
 # ==========================
 # PYTHON (Padrão)
