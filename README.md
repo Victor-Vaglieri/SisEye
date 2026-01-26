@@ -16,12 +16,13 @@ O projeto foi concebido como um laboratório para estudo de protocolos de vídeo
 
 ### Objetivos do Projeto
 
-1. Descoberta Automática: Identificação de dispositivos ONVIF na rede local (Port Scanning e Handshake SOAP).
-2. Extração de Streams: Coleta automática de URLs RTSP, com suporte a diferenciação de perfis (MainStream/SubStream).
-3. Painel de Vigilância (SisEye Player): Interface gráfica com Layout em Grid (1 câmera principal + 1 secundária).
-4. Controle Integrado: Terminal de comandos embutido na interface visual (controle de Luz/IR).
-5. Estabilidade de Rede: Implementação de captura assíncrona (Threading) e transporte via TCP para evitar corrupção de pacotes em Wi-Fi.
-
+1.  **Descoberta e Inventário:** Identificação automática de dispositivos na rede local.
+2.  **Segurança (.env):** Credenciais e configurações sensíveis isoladas em variáveis de ambiente.
+3.  **Painel Híbrido (SisEye Player):**
+    * **Cam 1:** Visualização completa com suporte a Zoom Digital.
+    * **Cam 2:** Layout customizado com **recorte inteligente (crop)** da metade superior (foco em área de interesse).
+4.  **Controle Integrado:** Comandos de PTZ e atalhos de teclado.
+5.  **Estabilidade (Anti-Crash):** Reconexão automática e tratamento de erros para codecs (H.265/HEVC).
 
 ## Ciclo de Desenvolvimento
 
@@ -96,8 +97,10 @@ Crie um arquivo chamado `.env` na raiz do projeto com o seguinte formato:
 
 ```env
 # Credenciais da Câmera
+# mude de acordo com o seu usuario
 ONVIF_USER=admin
 ONVIF_PASS=admin
+
 ONVIF_PORT=8899
 ```
 
