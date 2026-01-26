@@ -101,7 +101,7 @@ python3 main.py
 Realiza uma varredura na rede local (scan) para identificar dispositivos ativos compatíveis com ONVIF e cria o inventário inicial de IPs.
 
 ```
-python3 listar_onvif.py
+python3 '1 - listar_onvif.py'
 ```
 
 ### Coletador de URLs RTSP
@@ -109,7 +109,7 @@ python3 listar_onvif.py
 Lê o arquivo de IPs, conecta-se a cada câmera para identificar os perfis de vídeo (Main/Sub Stream) e gera a lista detalhada de links de reprodução.
 
 ```
-python3 gerar_rtsp.py
+python3 '2 - gerar_rtsp.py'
 ```
 
 > [!NOTE]
@@ -120,7 +120,7 @@ python3 gerar_rtsp.py
 Abre a interface gráfica de monitoramento baseada em OpenCV, com suporte a multithreading para exibição fluida e terminal de comandos integrado.
 
 ```
-python3 painel.py
+python3 '3 - painel.py'
 ```
 
 > [!NOTE]
