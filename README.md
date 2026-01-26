@@ -78,6 +78,7 @@ onvif/
 ├── 2 - gerar_rtsp.py
 ├── 3 - painel.py
 ├── cameras_onvif.txt
+├── .env
 └── rtsp_urls_detalhado.txt
 ```
 
