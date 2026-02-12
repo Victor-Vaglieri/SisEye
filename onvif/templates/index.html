@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SisEye Web - Vigilância</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #0f0;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 { margin: 10px 0; font-size: 1.5rem; text-transform: uppercase; border-bottom: 2px solid #0f0; }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 95%;
+            max-width: 1200px;
+        }
+
+        .cam-box {
+            background: #000;
+            border: 2px solid #333;
+            position: relative;
+        }
+
+        .cam-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .label {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2px 5px;
+            font-size: 0.8rem;
+        }
+
+        /* Controles PTZ */
+        .controls {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 60px);
+            gap: 5px;
+        }
+
+        button {
+            background: #222;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.2s;
+        }
+
+        button:active { background: #0f0; color: #000; }
+        
+        .status-log {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>SisEye Monitor <span style="font-size:0.8rem">v2.0 Web</span></h1>
+
+    <div class="grid-container">
+        <div class="cam-box">
+            <div class="label">CAM 01 - MAIN</div>
+            <img src="/video_feed/0" alt="Carregando Cam 1...">
+        </div>
+
+        <div class="cam-box">
+            <div class="label">CAM 02 - CROP</div>
+            <img src="/video_feed/1" alt="Carregando Cam 2...">
+        </div>
+    </div>
+
+    <div class="controls">
+        <div></div>
+        <button onmousedown="ptz('up')" onmouseup="ptz('stop')">▲</button>
+        <div></div>
+        
+        <button onmousedown="ptz('left')" onmouseup="ptz('stop')">◄</button>
+        <button style="border-color: #f00; color:#f00;">●</button>
+        <button onmousedown="ptz('right')" onmouseup="ptz('stop')">►</button>
+        
+        <div></div>
+        <button onmousedown="ptz('down')" onmouseup="ptz('stop')">▼</button>
+        <div></div>
+    </div>
+
+    <div class="status-log" id="log">Sistema Pronto. Use setas do teclado.</div>
+
+    <script>
+        // Função que chama o Python
+        async function ptz(cmd) {
+            document.getElementById('log').innerText = "Enviando: " + cmd;
+            try {
+                await fetch(`/api/ptz/${cmd}`);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // Controle via Teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.repeat) return;
+            if (e.key === "ArrowUp") ptz('up');
+            if (e.key === "ArrowDown") ptz('down');
+            if (e.key === "ArrowLeft") ptz('left');
+            if (e.key === "ArrowRight") ptz('right');
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+                ptz('stop');
+            }
+        });
+    </script>
+</body>
+</html>
