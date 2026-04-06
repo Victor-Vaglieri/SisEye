@@ -1,0 +1,18 @@
+# Dependencias do sistema SisEye
+
+# Networking / ONVIF
+onvif-zeep
+wsdiscovery
+
+# Processamento de Imagem e Video
+opencv-python
+numpy
+
+# Web Server
+fastapi
+uvicorn
+jinja2
+python-dotenv
+
+# Interface e Utilidades
+keyboard
