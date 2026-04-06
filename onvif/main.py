@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
+# Script principal que gerencia a execucao dos outros scripts do sistema SisEye.
+
 import os
 import subprocess
 import sys
 import platform
+import logging
 
-# ==========================
-# CONFIG
-# ==========================
-EXTENSAO = ".py"
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
-# ==========================
-# UTILITÁRIOS
-# ==========================
 def limpar_tela():
     sistema = platform.system()
     if sistema == "Windows":
@@ -19,99 +17,58 @@ def limpar_tela():
     else:
         os.system("clear")
 
-# ==========================
-# LISTAR PROGRAMAS
-# ==========================
-def listar_programas():
-    arquivos = []
-    # Lista arquivos do diretório atual
-    for f in os.listdir("."):
-        # Filtra por extensão e ignora o próprio script
-        if f.endswith(EXTENSAO) and f != os.path.basename(__file__):
-            arquivos.append(f)
+def listar_scripts():
+    scripts_dir = "scripts"
+    if not os.path.exists(scripts_dir):
+        return []
+    
+    arquivos = [os.path.join(scripts_dir, f) for f in os.listdir(scripts_dir) if f.endswith(".py")]
     return sorted(arquivos)
 
-# ==========================
-# MENU
-# ==========================
-def menu(programas):
+def executar(script_path, pausa=True):
     limpar_tela()
-    print("==== PAINEL DE FERRAMENTAS ====\n")
-
-    for i, p in enumerate(programas, 1):
-        print(f"{i}) {p}")
-
-    print("\n0) Sair")
-
-# ==========================
-# EXECUTAR
-# ==========================
-def executar(programa, pausa=True):
-    limpar_tela()
-    print(f"▶ Executando {programa}...\n")
+    print(f"Executando {os.path.basename(script_path)}...\n")
     print("-" * 40)
     
     try:
-        # Chama o python atual para rodar o script
-        subprocess.run([sys.executable, programa])
+        subprocess.run([sys.executable, script_path])
     except KeyboardInterrupt:
-        print("\n\n⏹ Execução interrompida pelo usuário.")
+        print("\n\nExecucao interrompida pelo usuario.")
     except Exception as e:
-        print(f"\n❌ Erro ao tentar executar: {e}")
+        logger.error(f"Erro ao executar script: {e}")
 
     print("-" * 40)
-    
     if pausa:
         input("\nPressione ENTER para continuar...")
 
-# ==========================
-# MAIN
-# ==========================
-def main():
-    # 1. Carrega a lista inicial
-    programas = listar_programas()
-
-    if not programas:
-        print("❌ Nenhum programa encontrado no diretório.")
-        input("Pressione ENTER para sair...")
-        return
-
-    # =========================================
-    # 🚀 AUTO-EXECUÇÃO DOS 3 PRIMEIROS
-    # =========================================
-    # Pega os 3 primeiros da lista (ou menos, se tiver menos de 3)
-    fila_automatica = programas[:3] 
-    
-    if fila_automatica:
-        print(f"🔄 Iniciando execução automática de {len(fila_automatica)} scripts...")
-        import time
-        time.sleep(1.5) # Pequena pausa para ler a mensagem
-
-        for prog in fila_automatica:
-            executar(prog, pausa=True) # 'pausa=True' para você ver o resultado antes do próximo
-
-    # =========================================
-    # 🖥 ENTRA NO MENU INTERATIVO
-    # =========================================
+def menu():
     while True:
-        # Recarrega a lista (caso algum arquivo tenha sido criado/deletado)
-        programas = listar_programas()
-        
-        menu(programas)
+        scripts = listar_scripts()
+        limpar_tela()
+        print("==== SIS EYE: PAINEL DE CONTROLE ====\n")
 
-        escolha = input("\nEscolha uma opção: ").strip()
+        for i, s in enumerate(scripts, 1):
+            nome = os.path.basename(s).replace(".py", "").replace("_", " ").title()
+            print(f"{i}) {nome}")
+
+        print("\n9) Inspetor de Comandos (Utils)")
+        print("0) Sair")
+
+        escolha = input("\nEscolha uma opcao: ").strip()
 
         if escolha == "0":
-            limpar_tela()
             print("Saindo...")
             break
+        elif escolha == "9":
+            executar(os.path.join("scripts", "utils", "inspector.py"))
+            continue
 
         if not escolha.isdigit():
             continue
 
         idx = int(escolha) - 1
-        if 0 <= idx < len(programas):
-            executar(programas[idx])
+        if 0 <= idx < len(scripts):
+            executar(scripts[idx])
 
 if __name__ == "__main__":
-    main()
+    menu()
