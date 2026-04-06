@@ -1,152 +1,90 @@
 # SisEye (ONVIF)
 
-Este repositório contém a documentação e o código-fonte de um conjunto de ferramentas desenvolvidas em Python para descoberta, gerenciamento e visualização de câmeras de segurança compatíveis com o protocolo ONVIF, com foco em aprendizado técnico, automação e construção de um painel de vigilância customizado.
+Este repositório contém o código-fonte de um conjunto de ferramentas profissionais desenvolvidas em Python para descoberta, gerenciamento e visualização de câmeras de segurança compatíveis com o protocolo ONVIF. O foco do projeto é automação, segurança e a construção de um painel de vigilância customizado e eficiente.
 
 ## Hardware Compatível
 
-Este software foi otimizado e validado **exclusivamente** para o seguinte hardware. O funcionamento em outros dispositivos não é garantido devido a particularidades de firmware e codec (HEVC).
+Este software foi otimizado e validado para hardware OEM genérico, mas segue os padrões universais do protocolo ONVIF.
 
-* **Fabricante:** H264 (OEM Genérico / ICSee / XMeye)
-* **Modelo:** `XM535_X6E-WEQ_8M`
-* **Firmware Validado:** `V5.07.X02.000A07F3.10010.346532.S.ONVIF 21.06`
+* **Fabricante Sugerido:** H264 (OEM Genérico / ICSee / XMeye)
+* **Protocolo:** ONVIF 2.0+
+* **Codecs Suportados:** H.264 / H.265 (HEVC)
 
 ## Visão Geral
 
-O projeto foi concebido como um laboratório para estudo de protocolos de vídeo e redes, evoluindo para uma solução prática de monitoramento. Diferente de VMS tradicionais, o SisEye é leve e roda via linha de comando ou interface gráfica minimalista baseada em OpenCV.
+O SisEye é uma solução leve e modular de monitoramento. Ele separa a lógica de conexão, descoberta e interface para garantir manutenibilidade e performance. Diferente de VMS pesados, o SisEye foca na agilidade e no controle direto via código ou interfaces minimalistas.
 
-### Objetivos do Projeto
+### Diferenciais do Projeto
 
-1.  **Descoberta e Inventário:** Identificação automática de dispositivos na rede local.
-2.  **Segurança (.env):** Credenciais e configurações sensíveis isoladas em variáveis de ambiente.
-3.  **Painel Híbrido (SisEye Player):**
-    * **Cam 1:** Visualização completa com suporte a Zoom Digital.
-    * **Cam 2:** Layout customizado com **recorte inteligente (crop)** da metade superior (foco em área de interesse).
-4.  **Controle Integrado:** Comandos de PTZ e atalhos de teclado.
-5.  **Estabilidade (Anti-Crash):** Reconexão automática e tratamento de erros para codecs (H.265/HEVC).
-
-## Ciclo de Desenvolvimento
-
-O desenvolvimento segue uma abordagem incremental, organizada nas seguintes etapas:
-
-1. Descoberta e Inventário: Implementação de scripts para localização de câmeras ONVIF na rede.
-2. Extração de Streams: Obtenção e padronização das URLs RTSP.
-3. Visualização: Construção de um painel para exibição simultânea das câmeras.
-4. Interação e Comandos: Implementação de controles globais e por câmera (PTZ, IR, modos).
-5. Refinamento: Otimizações de performance, estabilidade e organização da interface.
-
-
-
-## Principais Ferramentas
-### Descoberta ONVIF
-
-+ Localiza câmeras compatíveis com ONVIF na rede local
-+ Gera um arquivo de inventário com IPs e informações básicas
-
-### Extração de URLs RTSP
-
-+ Conecta às câmeras via ONVIF
-+ Obtém os perfis de mídia disponíveis
-+ Gera uma lista padronizada de URLs RTSP
-
-### Painel de Monitoramento (CFTV)
-
-+ Exibição simultânea das câmeras em grid quadrado
-+ Slot dedicado para comandos e interações
-+ Estrutura preparada para controle PTZ e modos de operação
-
-### Launcher de Ferramentas
-
-+ Interface em terminal
-+ Listagem automática de scripts disponíveis
-+ Execução isolada e organizada de cada módulo
-
-
-## Tecnologias Utilizadas
-
-+ Python 3.11
-+ Visão Computacional & UI: OpenCV (cv2)
-+ Protocolos: ONVIF (onvif-zeep), RTSP, TCP/IP
-+ Concorrência: Python threading e subprocess
-
-
+1.  **Arquitetura Modular:** Lógica centralizada na pasta `core/` para fácil reaproveitamento.
+2.  **Segurança Avançada:** Uso rigoroso de variáveis de ambiente (`.env`) para proteger credenciais.
+3.  **Interface Híbrida:** Opções de monitoramento via Desktop (OpenCV) ou Web (FastAPI).
+4.  **Recorte Inteligente:** Suporte a visualizações customizadas (Crop) para focar em áreas de interesse.
+5.  **Robustez:** Sistema de reconexão automática e tratamento de quedas de stream.
 
 ## Estrutura do Projeto
 
-```
+```text
 onvif/
-├── main.py
-├── 1 - listar_onvif.py
-├── 2 - gerar_rtsp.py
-├── 3 - painel.py
-├── cameras_onvif.txt
-├── .env
-└── rtsp_urls_detalhado.txt
+├── core/                 # Lógica central (Config, Descoberta, Stream)
+├── scripts/              # Scripts de execução (01 a 04)
+│   └── utils/            # Utilitários de inspeção e teste
+├── static/               # Arquivos estáticos (CSS, JS) para o Painel Web
+├── templates/            # Templates HTML (Jinja2)
+├── main.py               # Launcher central do sistema
+├── .env.example          # Modelo de configuração de ambiente
+└── requirements.txt      # Dependências do projeto
 ```
 
+## Configuração e Instalação
 
+### 1. Requisitos
+Certifique-se de ter o Python 3.8+ instalado. Instale as dependências utilizando o arquivo `requirements.txt`:
 
-## Execução
+```bash
+pip install -r onvif/requirements.txt
+```
 
-Todos os scripts podem ser executados individualmente ou por meio de um launcher em terminal, que lista automaticamente as ferramentas disponíveis no diretório.
+### 2. Variáveis de Ambiente
+O projeto utiliza um arquivo `.env` para gerenciar credenciais com segurança. 
+Copie o modelo de exemplo e preencha com seus dados:
 
-### Configuração (.env)
+```bash
+cp onvif/.env.example onvif/.env
+```
 
-O projeto utiliza um arquivo `.env` para gerenciar credenciais, eliminando a necessidade de editar o código-fonte.
-
-Crie um arquivo chamado `.env` na raiz do projeto com o seguinte formato:
-
+Edite o arquivo `onvif/.env` com as informações da sua rede:
 ```env
-# Credenciais da Câmera
-# mude de acordo com o seu usuario
 ONVIF_USER=admin
-ONVIF_PASS=admin
-
+ONVIF_PASS=sua_senha
 ONVIF_PORT=8899
+IP_TESTE=192.168.1.100
 ```
 
-### dependencias
+## Como Usar
 
-Antes de iniciar, instale as bibliotecas essenciais para processamento de imagem (OpenCV), comunicação com câmeras (ONVIF) e descoberta de rede:
+### Launcher Central
+A maneira mais fácil de utilizar o sistema é através do script principal na raiz da pasta `onvif`:
 
-```
-pip install opencv-python onvif-zeep numpy wsdiscovery keyboard ffpyplayer python-dotenv
-```
-
-### Launcher de controle
-
-Inicia o menu interativo no terminal, permitindo selecionar e executar qualquer ferramenta do kit de forma centralizada e organizada.
-
-```
-python3 main.py
+```bash
+python onvif/main.py
 ```
 
-### Localizador de cameras ONVIF
+### Fluxo de Operação
+Para configurar o sistema pela primeira vez, siga esta ordem:
 
-Realiza uma varredura na rede local (scan) para identificar dispositivos ativos compatíveis com ONVIF e cria o inventário inicial de IPs.
+1.  **01_discovery.py**: Localiza as câmeras ONVIF na sua rede local.
+2.  **02_generate_rtsp.py**: Conecta nas câmeras encontradas e extrai as URLs de streaming.
+3.  **03_web_panel.py**: Inicia o servidor para visualização via navegador (FastAPI).
+4.  **04_desktop_panel.py**: Inicia a interface desktop de alta performance (OpenCV).
 
-```
-python3 '1 - listar_onvif.py'
-```
+## Tecnologias Utilizadas
 
-### Coletador de URLs RTSP
+* **Linguagem:** Python 3
+* **Streaming:** OpenCV, FFmpeg
+* **Web:** FastAPI, Uvicorn, Jinja2
+* **ONVIF:** onvif-zeep, wsdiscovery
+* **Interface:** Vanilla CSS & JS, Keyboard (Desktop)
 
-Lê o arquivo de IPs, conecta-se a cada câmera para identificar os perfis de vídeo (Main/Sub Stream) e gera a lista detalhada de links de reprodução.
-
-```
-python3 '2 - gerar_rtsp.py'
-```
-
-> [!NOTE]
-> Para Executar é necessario do arquivo _**cameras_onvif.txt**_
-
-###  Painel  com Grid
-
-Abre a interface gráfica de monitoramento baseada em OpenCV, com suporte a multithreading para exibição fluida e terminal de comandos integrado.
-
-```
-python3 '3 - painel.py'
-```
-
-> [!NOTE]
-> Para Executar é necessario do arquivo _**rtsp_urls_detalhado.txt**_
-
+---
+*Desenvolvido para entusiastas de CFTV e automação residencial.*
